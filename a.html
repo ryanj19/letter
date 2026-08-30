@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open me! 💌</title>
+  <style>
+    body {
+      background-color: #ffcaf0;
+      text-align: center;
+      font-family: sans-serif;
+    }
+
+    .header {
+      width: 100vw;
+      text-align: center;
+      margin: 0;
+      font-size: 25px;
+      background-color: #ffb6c1;
+      padding: 16px 0;
+      border-bottom: 2px solid #141414;
+      position: fixed;
+      top: 0;
+      left: 0;
+      font-family: 'lucida handwriting', cursive;
+
+    }
+
+    .header h1 {
+      font-size: 69px;
+      margin: 0;
+    }
+
+    .envelope-wrapper {
+      display: inline-block;
+      margin-top: 270px;
+      perspective: 1200px;
+      z-index: 10;
+    }
+
+    .envelope {
+      width: 300px;
+      height: 200px;
+      background-color: #ffb6c1;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 10;
+      transition: transform 1s ease;
+      transform-style: preserve-3d;
+    }
+
+    .envelope.open {
+    transform: rotateX(30deg) scaleX(1.3) scaleY(1.2);
+}   
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) rotateX(0deg);
+      transform-origin: top center;
+      width: 0;
+      height: 0;
+      border-left: 151px solid transparent;
+      border-right: 151px solid transparent;
+      border-top: 100.5px solid #ffa0ae;
+      z-index: 3;
+      transition: transform 1s ease;
+      filter: drop-shadow(0 0 1px #d46a85);
+    }
+
+    .flap.open {
+      transform: translateX(-50%) rotateX(180deg);
+    }
+
+
+    .bottom {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%) rotateX(0deg);
+        transform-origin: bottom center;
+        width: 0;
+        height: 0;
+        border-left: 151px solid transparent;
+        border-right: 151px solid transparent;
+        border-bottom: 100.5px solid #ffa0ae;
+        z-index: 2;
+        margin-top: 100px;
+        transition: transform 1s ease;
+        filter: drop-shadow(0 0 1px #d46a85);
+    }
+
+    .heart > img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 85px;
+      height: 85px;
+      z-index: 4;
+      animation: b 3s ease-in-out infinite;
+      cursor: pointer;
+    }
+
+    @keyframes b {
+      0%, 8%, 92%, 100% { transform: translate(-50%, -50%) scale(1); }
+      10%, 30% { transform: translate(-50%, -50%) scale(1.2); }
+      20%, 36% { transform: translate(-50%, -50%) scale(0.9); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+      60%, 80% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .hint {
+      margin-top: 230px;
+      color: #e88ca7;
+      font-size: 0.95rem;
+      text-align: center;
+      margin-top: 50%;
+    }
+
+    .letter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 87%;
+  height: 87%;
+  background-color: #fff;
+  border: 2px solid #e88ca7;
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+  opacity: 0; 
+  transition: opacity 1s ease;
+  z-index: 1; 
+  padding: 10px;
+  text-align: start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  pointer-events: none;
+}
+
+.letter.open {
+  opacity: 1; 
+  z-index: 5; 
+  pointer-events: auto;
+}
+
+    .letter::-webkit-scrollbar { width: 10px; }
+    .letter::-webkit-scrollbar-thumb {
+      background: #ff88cd;
+      border-radius: 10px;
+    }
+    .letter::-webkit-scrollbar-track { 
+    background: #ffe4f0;
+    }
+    .letter p{
+      margin-top: -46px;
+      margin-right: 150px;
+    }
+
+    .content {
+      color: #ff88cd;
+      width: 90vw;
+      max-width: 400px;
+      white-space: pre-line;
+      font-family: lucida handwriting, cursive;
+    }
+    .bottom.open {
+  transform: translateX(-50%) rotateX(-180deg);
+    }
+     .flap.open .heart > img {
+     opacity: 0;
+     transition: opacity 0.5s ease;
+    }
+    .left {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) rotateY(0deg);
+  transform-origin: left center;
+  width: 0;
+  height: 0;
+  border-top: 100px solid transparent;
+  border-bottom: 100px solid transparent;
+  border-left: 150px solid #ffa0ae;
+  z-index: 2;
+  transition: transform 1s ease;
+  filter: drop-shadow(0 0 1px #d46a85);
+}
+
+.left.open {
+  transform: translateY(-50%) rotateY(-180deg);
+}
+
+.right {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) rotateY(0deg);
+  transform-origin: right center;
+  width: 0;
+  height: 0;
+  border-top: 100px solid transparent;
+  border-bottom: 100px solid transparent;
+  border-right: 150px solid #ffa0ae;
+  z-index: 2;
+  transition: transform 1s ease;
+  filter: drop-shadow(0 0 1px #d46a85);
+}
+
+.right.open {
+  transform: translateY(-50%) rotateY(180deg);
+}
+audio {
+padding:25px;
+width: 250px;
+height: 50px;
+margin-top: -30px;
+margin-bottom: 30px;
+margin-left: -25px;
+
+}
+.song .iris {
+color: black;
+padding: 5px;
+margin-top:10px;
+margin-bottom:-15px;
+}
+.song .mundo {
+color: orange;
+  padding: 5px;
+margin-top:10px;
+  margin-bottom:-15px;
+}
+.song .where {
+color: steelblue;
+  padding: 5px;
+margin-top:10px;
+  margin-bottom:-15px;
+}
+.song .bawatpiyesa {
+color: saddlebrown;
+  padding: 5px;
+margin-top:10px;
+  margin-bottom:-15px;
+}
+.song .isanganghel {
+color: darkgray;
+  padding: 5px;
+margin-top:10px;
+  margin-bottom:-15px;
+}
+.content a {
+margin-bottom: 5px;
+color: #ff88cd;
+text-decoration: none;
+font-size: 15px;
+margin-top: -10px;
+display:block;
+}
+.content a:hover{
+color:#ff1493;
+}
+.content a:active{
+color:#c71585;
+}
+.content .bolaga{
+color: #E5E5E5;
+text-align:center;
+font-size: 58px;
+font-family:none;
+margin-bottom:-22px;
+padding: 5px;
+}
+.content .mini{
+color: #E5E5E5;
+text-align:center;
+font-size: 0.75rem;
+font-family: none;
+padding: 7px;
+margin-bottom:4000px;
+margin-top: -27px;
+}
+.song s1 {
+margin-top:40px;
+}
+    
+  </style>
+</head>
+<body spellcheck="false">
+  <div class="header">
+    <h1>Open me! 💌</h1>
+  </div>
+
+  <div class="envelope-wrapper">
+    <div class="envelope" id="envelope">
+        <div class="left"></div>
+        <div class="right"></div>
+      <div class="flap" id="flap">
+  <div class="heart">
+    <img src="./images/heart.png" alt="Heart" id="heartBtn">
+    </div>
+    </div>
+      <div class="bottom"></div>
+
+      <div class="letter" id="letterBox">
+        <div class="content">
+          <p class="bolaga">
+            BOLAGA
+</p>
+          <p class="mini">
+            pwede to iscroll look try mo →
+          </p>
+          <p   class="bolaga">BOLAGA</p>
+          <p class="mini">‎ulit</p>
+          <p class="bolaga">BOLAGA</p>
+          <p class="mini">tatlo para I love you mwehwhewhwehw</p>
+
+          
+          <p>
+          HAPPY 6TH MONTHSARY BABYYYY!!!
+
+Hi baby nagulat ka no? nahirapan ka kaya sa password dali na non siguro sa full name kasi dapat kasama buong middle name makuha mo kaya yon first try? galing nmn kung nakuha nga agad nacrave ka sa mcdo no? opo baby eto po ung coding na matagal ko na pinagpupuyatan minsan nga dna natulog e HAHAHAHAHAA lahat tinry ko iperfect so wait ka muna siguro sa sept 20 ko to isesend patapos nato e sept 2 ngayon well technically tapos na sya pero syempre lalagyan ko to ng kung ano anong pakulo baby moto HAHAHAHAHHAA weh 6th daw pero parang first time lng to cinelebrate HAHAHAHAHA pero dati may times na inisip ko nlng monthsary yon like mga 20 or 24 dati nagaaya ako ng mcdo HAHAHAHAHA tapos inisip ko nlng na ganon yon. Muntikan na nga rin akong mahuli habang ginagawa to e kasi kahit anong tab may baby or pink na letter HAHAHAHHAA.
+
+HIIII BABYYYYYYYYYYY
+Thank you baby for always being there and for staying na kahit sobrang weird ko, sobrang jejemon ko, sobrang arte ko, dami kong ginagawang mali mababa grades ko, minsan nasasaktan kita, minsan dmo na fefeel na nililigawan kita sorry po sa lahat baby mahal na mahal kita sorry din kung ilang beses mo akong tinanong non na magpahinga pero lagi akong naginarte kasi ayoko tlga na ganon na magpapahinga tayo na alam ko na babalik pa pero gusto ko araw araw minsan hindi ko alam kung sure ikaw din dyan kasi feeling ko nadala nga lng ng emosyon mo yan. Thank you baby sa lahat na kahit nawala ko ung keychain mo na andami ko laging nagagawang mali nagstay padin ikaw mahal na mahal kita baby alam mo, dahil sayo mas sumaya ako wag mo isipin na nasasaktan mo lng ako mas sumasaya ako dahil sayo, mas masaya ako ngayon dahil sayo, dahil sayo mas ngumingiti nako at mas nagmamature ako tuwing napapagod ako sa mga practices makita lng kita okay nako thank you sa lahat lalo na sa pagstay saakin. Grabe ang layo na ng narating natin mula nung nakikitawa lng ikaw sakin nung gr8 kahit dmo ako kilala HAHAHAHA tapos nung nagpapapansin ako nung gr9 papansin e biglang nakisabay kalaro lng nmn sa ml at magkalapit lng nmn ng bahay ayon tlga pinakarason ko (crush po tlga kita mwhehwhhew) hanggang ngayon grabe 7 months na tayo and still counting sheeeesh HAHAHAHAHAA tuloy tuloy na yan syempre hanggang dulo. Baby nagseselos padin ako sa teddy bear mo tlga kung sana lng kasi d ako nahihiya tlga at kung pwede lng nandyan nako araw araw dyan nako umuuwi HAHAHAHAHAHA kung sana lng tlga. Sorry nga pla sa late at random na pagsend ko nung nagtanong ako kung manliligaw ako kasi gusto ko tlga ung tatanungin kita e tapos matagal na yon nagawa wala ding timing HAHAHAHAHAA eto din random din to joke 7 month na kaya siguro inisip mo random no?🙄 HAHAHAHAHAHAHAA joke hindi yann dba noh. mwa
+
+
+
+
+yieeeeeeeeeeeee kiniss ko sya
+
+
+I LOVE YOUUUUUU SOOOOOOOOOOO MUUUUUUUUUCCCCCCCCHHHHHHHHHHHHHH BABYYYYYYYYY THANK YOU SO MUCH DIN TLGA SA PAGSSTAY MAHAL NA MAHAL KITA MWAAAAA
+
+
+
+yieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee HAHAHAHAHAHAHAHAHA
+
+I love you baby thank you po tlga sa pagsstay sa lahat lahat po thank you I love you baby mahal na mahal ko lahat sayo ung mga mata mo, cute mong ngiti, tawa, kahit mataray o galit cute padin e pakagat nga ng pisngi thank you baby at hinayaan mo akong ituloy pa ung panliligaw ko salamat tlga sa lahat baby I'm so lucky to be the boy who gets call you mine, the boy you chose, to be the boy standing by your side. Every moment with you reminds me that I'm blessed to have you in my life. You're my happiness, my inspiration, and the reason my heart feels complete and I can't imagine my life without you. You make me the happiest boy ever and I feel like I’m the luckiest boy ever for being the boy that can always stand by your side. Minsan baby naiisip ko sobrang grateful ko na ikaw po ung kasama ko araw araw, ang dami ngang stress sa araw araw lalo na yang talumpati na yan pero nakakalimutan ko yan lahat mas gumagaan pakiramdam ko pagkasama kita. Sobrang saya ko lagi kahit makita lng kita makausap sa chat makakwentuhan ng konti kahit konting tawanan lng sobrang saya ko na nakakalimutan ko lahat ng problema ko lahat ng stress thank you baby for being you I didn’t thought about us getting this far because when we were grade 8 because you didn’t even knew my name until Angeline said it in the 3rd quarter HAHAHAHAHAHA
+
+Alam mo baby dati kaya lagi kong sinasabi na wala akong interes sa love life love life na yan HAHAHAHA. Kasi lagi akong inaasar noon na may girlfriend daw ako, may crush, may gusto sa babae na best friend ko lng ganon, ewan ko ba kung bakit ganun sila. Syempre sinasabi ko wala akong pake don kahit crush plng kita HAHAHAHAHAHA kasi parang hindi ko pa tlga naisip na aabot tayo sa ganto syempre imagination ko lng yon pero ang sarap sa feeling na imagination ko lng dati nagkatotoo. Natatawa nlng ako baby kasi dba dati nga inaasar lng ako na meron na akong may gusto, girlfriend, may crush lagi ko yan tinanggihan dati kahit crush na kita syempre sikret ko lng yon e HAHAHAHAHHAA kahit before po na wala pa akong crush inaasar na nila ako. Tapos naaalala ko din pagkaiyakin ko noon ganon mas bumabalik na rin sya alam mo naman maiiyak din tlga ako sa ganon agad lalo na sabi mo non gusto mo gawin kitang broken? grabe sobrang naluha ako non HAHAHAHHAHA kahit alam kong joke mo lng yon hindi ko alam lumabas lng tlga ung luha e. Ngayon mas nangaasar na sila lagi kasi may nililigawan na nga ako kasi nga sabi ko dati wala akong interes sa love life dati HAHAHHAAHAA pero it was all worth it baby kasi ikaw naman.
+
+
+YESSSS nahanap din ung suklay na yellow matagal ko na syang hinahanap para maging suklay na din natin siya HAHAHAHAHAHA. Salamat na salamat sa lahat baby sa mga libre mo saking milktea mcdo hehehehehe sa kinakausap mo padin ako kahit sobrang weird ko HAHAHAHAHAHA at syempre thank you baby sa pagsstay kahit may times na pagod na pagod ikaw siguro nadadala lng tlga sa emosyon nasasabi mo rin ung pahinga or baka hindi tlga sya dala lng ng emosyon baka gusto mo tlga salamat po tlga baby kiss yan sakin yieeeeeeeeee
+
+yieeeeeeeeeeeeeeeeeeeee
+
+Alam mo, din baby dati wala na akong nakikitang future ko tapos dumating ikaw bigla ako nagkaroon na ng imagination ng future na lahat kasama ka syempre dapat lng wala akong maimagine na future ko na wala ka, sa future maglilive in tayo nyan tapos kakain lagi ng madaling araw siguro sabay lagi sa lahat tapos lagi mabilis mauubos pagkain natin nyan baka tayo nga lng magkainan lagi mhwehwhhehe joke HAHAHAHAHAHAHAHAA.
+
+Alam mo, baby na nung unang kita ko don sa clip sa toms world madami kasi iba don may mga tali pa nga e pero ayan kinuha ko ayan ung pinakafeeling ko gugustuhin mo e at ayan din ang pinakamataas ang value don dba pwede mo na yan ipang flex (ako iflex mo mwhehwhehwhwh) HAHAHAHHAHAHAHA nung unang tingin ko din don alam ko na na ayon magugustuhan mo white ung nakadisplay e tapos nung icclaim ko na gulat ako may yellow ayon kinuha ko kaya kita tinanong kung gusto mo tulips ganon or yellow tulips HAHAHAAHAHAA awkward ko tlga magbigay ng gifts sobra tapos alam mo, mas ginaganahan ako magcode at calisthenics kahit maghilamos (opo weird) HAHAHAHAHA pero dahil sayo ung calisthenics matagal na kasi dba sabi mo gusto mo malaking biceps HAHAHAHAHA hoy nahurt ako nung sabi mo meron kaba may mapapakita kaba may masesend kaba nasaktan ako don ngayon hinahawakan mo na HAHAHAHAHAHA pero nasaktan nga ako sobra non kasi pinagpupuyatan ko yon, pinaghihirapan ko yon kahit minsan pinapagalitan nako kasi gabing gabi na naggaganon prin ako ginagawa ko parin kahit puro pasa na buong katawan ko ginagawa ko parin para maachieve ung ganon tlga tapos ganon sasabihin mo tas sa paghihilamos na rin HAHAHAHAA kasi feeling ko ganon nmn siguro mas gusto mo na mas makinis mas malinis ung mukha kaya mas ginaganahan ako maghilamos HAHHAHAHAHAA tapos sa code mas ginaganahan ako ngayon tulad nung sunflower eto ung kung ano anong pakulo ginawa ko dito pareho yan matagal kong pinagpupuyatan pinaghihirapan para sayo baby d ako makpagantay na magsept 20 na agad HAHAHAHAHAHA. Thank you baby kasi sa lahat ng ginagawa ko ikaw lagi iniisip ko ikaw nagiging motivation tulad ng pagnatapos ko to makakausap na kita pagnaachieve ko to ngingiti ka pagnagawa ko to sasaya ka thank you so much baby for becoming my motivation in life din kasi dati suko na tlga ako pero nandyan ka nagkaroon ako ng rason para mas ayusin ko pagaaral ko pagccalisthenics ko pagccode ko mabuhay salamat sa lahat. Babyy I love you the most ikaw ang pinaka pinaka pinaka pinaka mahal na mahal na mahal ko sa buong buhay ko baby, Im so so soooo lucky to have you, to be with you, to talk with you everyday and sana kahit pareho plng tayong 15 ngayon umabot tayo ng hanggang dulo mahal na mahal kita sobra baby. 
+
+Naisip ko lng po feeling ko lng po baby isa sa pinaka problema po natin pareho po ung emosyon po natin lagi natin napapangunahan noh? sabay natin labanan to baby ha labanan natin yang emosyon na yan ng magkasama at sabay hindi natin kalaban ang isa’t isa baby tuwing nagaaway tayo kalaban natin ung problema mahal na mahal kita🥰. Pansin mo po siguro minsan noh kahit anong pagod, galit, inis, o lungkot ko nagccaps padin ako ng I love you? kasi kahit anong pagod, galit, inis o lungkot o kahit anong emosyon pa yan hinding hindi magbabago ang pagmamahal ko po sayo ganon kita kamahal.
+
+GRABE KANA BABYYYY TOP 1 DIBAA SABI KO SAYO IKAW MAGIGING TOP 1 E HAHAHAHAHHAHA SINABI NILA SAKIN KASI NAAKSIDENTE ATA NILANG NAKITA KAY MARCO BABY TOP 1 GRABE APAKA GALING TLGA MAGKAKAKISS YAN SAKIN NG MADAMI HUG YAN SAKIN NG MATAGAL AT MAHIGPIT sige free trial ulit kahit anong gawin mo na sakin HAHHAHAHAHA.
+
+Siguro iniisip mo na parang pano ako top 1? lagi naman akong late? mababa scores sa ganto ganyan ssshhhhh baby you really deserved it lalo na yang top 1 apaka galing tlga ng baby ko kinikilig ako HAHAHAHAHA nagccram lng ako kanina e tapos may nagsabi kilala mo top 1 sabi ko si josie umoo sila sabi nila nakita daw nila don kay marco HAHAHAHAHA. You really deserved it baby all that hard work paid off the times you go to school even if its late, when you still went to school even its raining so bad, when you were so stressed that you cried and cried about your members or assignments or projects, when you woke up so early just to do your assignments and projects you really really really deserved it baby congrats, I'm so proud of you kahit hindi kapa top 1 o honors proud na proud na proud parin ako sayo baby mamahalin at mamahalin parin kita baby ang galing galing mo tlga. Grabe tlga baby kahit sa sayaw apaka galing kung sana lng pla dko muna ginawa ung anime na part kung d muna ako naghanap ng parts don nakatulog agad ako tapos nakasama din ako sa sayaw may tambling tambling din sana tayo non HAHAHAHAHAHA sana kasama kita sumayaw pero siguro okay lng yon d rin naman ako makatulog non kung tinuloy ko magtry matulog non edi parang walang sense din kasi d makatulog pero kung nalaman kong kulang kayo tas may prac kayo tinry ko agad matulog ng matulog tas gumising ng maaga non HAHHAHAHAHA. Ang galing galing nyo po baby sobra lalo na ikaw grabe sobrang galing sarap gumalaw HAAHHAHAA proud na proud ako sayo babyy manalo matalo, mataas rank o hindi, proud na proud na proud ako sayo sobra.
+August ko pa pinagpplanuhan to eto na malapit na dumating bukas na gumawa na rin ako kagabi nung paper rings HAHAHAHA tagal ko na nakita yang paper rings e sa tiktok pero dko nga sure pano sya gagawing ikot siguro igglue HAHAHAHHAA tagal ko na din pinagisipan kailan kita gagawan bibigyan non pero eto na ginawa ko na dapat ngayon ko ibibigay e kaso absent ikaw sayang d tuloy kita nakiss tapos nakita lng kita saglit lng tas usap saglit lng baka mapagchismisan na e HAHAHHAHAHA mahal na mahal kita.
+ 
+SANA MAGUSTUHAN MO TO BABY I LOVE YOU SO MUCH BABY THANK YOU SO MUCH SA LAHAT I LOVE YOU THE MOST BABYYY MMMMMMMMWWWWWWAAAA
+            AAAAAAAAAAA
+
+
+
+
+
+
+
+
+
+            
+          </p>
+          <div class="song">
+      <p class="s1">These are some songs that I've dedicated to you</p>
+      <p class="iris">Iris</p>
+      <audio controls><source src="./audios/Iris.mp3" type="audio/mpeg"></audio>
+            <p>You’re the closest to heaven that I'll ever be. You’re the most important person to me, and I’d give up everything just to stay here with you.</p>
+      <p class="mundo">Mundo</p>
+      <audio controls><source src="./audios/Mundo.mp3" type="audio/mpeg"></audio>
+            <p>Ikaw ang tahanan at mundo ko, hindi nako maliligaw pa kasi nakilala na kita</p>
+      <p class="where">Wherever You Will Go</p>
+      <audio controls><source src="./audios/WhereverYouWillGo.mp3" type="audio/mpeg"></audio>
+            <p>Sasamahan kita kahit saan man ikaw magpunta sa buhay.</p>
+      <p class="bawatpiyesa">Bawat Piyesa</p>
+      <audio controls><source src="./audios/BawatPiyesa.mp3" type="audio/mpeg"></audio>
+            <p>Stay with me forever, takot na takot na takot akong mawala ka sobra</p>
+      <p class="isanganghel">Isang Anghel</p>
+      <audio controls><source src="./audios/IsangAnghel.mp3" type="audio/mpeg"></audio>
+            <p>Ikaw ang Isang Anghel ko na nagligtas sakin, nabago mo ako sobra.</p>
+    </div> 
+          <p>And also...</p>
+      <div class="anime"></div>
+          <p>Some parts of the anime I wanted to show you mwehwhehwe</p>
+          <a href="https://hianime.to/watch/your-lie-in-april-31?ep=926" target="_blank">Your Lie in April
+             Episode 1 15:00</a>
+          <a href="https://hianime.to/watch/my-teen-romantic-comedy-snafu-climax-84?ep=1774" target="_blank">Oregairu Season 3
+            Episode 11 18:08</a>
+          <a href="https://hianime.to/watch/kimi-ni-todoke-from-me-to-you-2-486?ep=9995" target="_blank">Kimi ni Todoke Season 2
+            Episode 9 6:20</a>
+          <a href="https://hianime.to/watch/toradora-232?ep=4975" target="_blank">Toradora! Episode 25 21:57</a>
+          <a href="https://hianime.to/watch/toradora-232?ep=4975" target="_blank">Toradora! Episode 25 10:25</a>
+        <p>
+          jejemon noh? HAHAHHAHAHAHA
+          pst scroll pa...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          at dahil with honors ikaw AT HINDI LANG WITH HONORS TOP 1 PAAA magmmcdo tayo sa monday🥰🥰🥰
+
+
+
+
+
+
+          
+          libre ko🥰🥰🥰
+        </p>
+        </div>
+      </div>
+    </div>
+    <div class="hint">Tap the heart to open it!</div>
+  </div>
+
+    <script>
+  const left = document.querySelector(".left");
+  const right = document.querySelector(".right"); 
+  const heartBtn  = document.getElementById("heartBtn");
+  const flap      = document.getElementById("flap");
+  const letterBox = document.getElementById("letterBox");
+  const envelope  = document.getElementById("envelope");
+  const bottom    = document.querySelector(".bottom");
+
+  heartBtn.addEventListener("click", () => {
+  flap.classList.toggle("open");
+  bottom.classList.toggle("open");  
+  left.classList.toggle("open");    
+  right.classList.toggle("open");   
+  letterBox.classList.toggle("open");
+  envelope.classList.toggle("open");
+  });
+    </script>
+</body>
+</html>
